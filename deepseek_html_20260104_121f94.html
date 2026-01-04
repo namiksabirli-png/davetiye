@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davetli Listesi - Nişan Programı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #8B008B, #9932CC);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .app-content {
+            padding: 30px;
+        }
+        
+        .instructions {
+            background-color: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #8B008B;
+        }
+        
+        .instructions h2 {
+            color: #8B008B;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions h2 i {
+            font-size: 1.5rem;
+        }
+        
+        .form-container {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-container h3 {
+            color: #8B008B;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #8B008B;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 0, 139, 0.1);
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .save-btn {
+            background: linear-gradient(to right, #8B008B, #9932CC);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(139, 0, 139, 0.2);
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 0, 139, 0.3);
+        }
+        
+        .save-btn:active {
+            transform: translateY(0);
+        }
+        
+        .guest-list-container {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .guest-list-container h3 {
+            color: #8B008B;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .guest-list {
+            list-style-type: none;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .guest-list li {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #8B008B;
+            transition: transform 0.2s;
+        }
+        
+        .guest-list li:hover {
+            transform: translateX(5px);
+        }
+        
+        .guest-number {
+            background-color: #8B008B;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .guest-info {
+            flex-grow: 1;
+            font-size: 1.1rem;
+        }
+        
+        .guest-count {
+            background-color: #8B008B;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .empty-list {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            padding: 30px;
+        }
+        
+        .delete-btn {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .delete-btn:hover {
+            background-color: #ff3742;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .app-content {
+                padding: 20px;
+            }
+            
+            .guest-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .guest-info {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Nişan Davet Programı</h1>
+            <p class="subtitle">Davetlilerin katılım bilgilerini toplamak için interaktif liste</p>
+        </header>
+        
+        <div class="app-content">
+            <div class="instructions">
+                <h2><i class="fas fa-info-circle"></i> Nasıl Çalışır?</h2>
+                <p>Davetliler aşağıdaki formu kullanarak kendi adlarını ve soyadlarını kaydedebilirler. Kaydedilen her isim aşağıdaki listeye eklenecek ve toplam davetli sayısı otomatik olarak güncellenecektir. Bu sayede nişanınıza kaç kişinin katılacağını takip edebileceksiniz.</p>
+            </div>
+            
+            <div class="form-container">
+                <h3><i class="fas fa-user-plus"></i> Katılım Formu</h3>
+                <p style="margin-bottom: 20px; color: #555;">Lütfen aşağıdaki alanları doldurarak nişan davetimize katılımınızı kaydedin:</p>
+                
+                <div class="input-group">
+                    <label for="name">Adınız:</label>
+                    <input type="text" id="name" placeholder="Adınızı giriniz...">
+                </div>
+                
+                <div class="input-group">
+                    <label for="surname">Soyadınız:</label>
+                    <input type="text" id="surname" placeholder="Soyadınızı giriniz...">
+                </div>
+                
+                <div class="button-container">
+                    <button class="save-btn" id="saveBtn">
+                        <i class="fas fa-save"></i> Listeye Kaydet
+                    </button>
+                </div>
+            </div>
+            
+            <div class="guest-list-container">
+                <h3><i class="fas fa-list-alt"></i> Davetli Listesi</h3>
+                
+                <div id="guestCount" class="guest-count">Toplam Davetli: 0</div>
+                
+                <ul class="guest-list" id="guestList">
+                    <!-- Davetliler buraya eklenecek -->
+                    <li class="empty-list">Henüz kayıtlı davetli bulunmuyor.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Bu liste tarayıcınızın yerel depolama alanında saklanır. Nişan tarihine kadar davetlilerin katılım bilgilerini takip edebilirsiniz.</p>
+            <p style="margin-top: 10px;">© 2023 Nişan Davet Programı</p>
+        </footer>
+    </div>
+
+    <script>
+        // Uygulama başladığında kayıtlı davetlileri yükle
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGuests();
+            
+            // Kaydet butonuna tıklama olayını ekle
+            document.getElementById('saveBtn').addEventListener('click', saveGuest);
+            
+            // Enter tuşu ile de kaydetmeyi sağla
+            document.getElementById('name').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') saveGuest();
+            });
+            
+            document.getElementById('surname').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') saveGuest();
+            });
+        });
+        
+        // Davetli kaydetme işlevi
+        function saveGuest() {
+            const name = document.getElementById('name').value.trim();
+            const surname = document.getElementById('surname').value.trim();
+            
+            // İsim ve soyisim kontrolü
+            if (name === '' || surname === '') {
+                alert('Lütfen adınızı ve soyadınızı giriniz.');
+                return;
+            }
+            
+            // Mevcut davetlileri al
+            let guests = JSON.parse(localStorage.getItem('weddingGuests')) || [];
+            
+            // Yeni davetliyi ekle
+            const newGuest = {
+                id: Date.now(), // Benzersiz ID
+                name: name,
+                surname: surname,
+                date: new Date().toLocaleDateString('tr-TR')
+            };
+            
+            guests.push(newGuest);
+            
+            // LocalStorage'a kaydet
+            localStorage.setItem('weddingGuests', JSON.stringify(guests));
+            
+            // Formu temizle
+            document.getElementById('name').value = '';
+            document.getElementById('surname').value = '';
+            
+            // Listeyi güncelle
+            loadGuests();
+            
+            // Başarılı mesajı
+            showNotification(`${name} ${surname} davetli listesine eklendi.`);
+        }
+        
+        // Davetlileri yükleme işlevi
+        function loadGuests() {
+            const guests = JSON.parse(localStorage.getItem('weddingGuests')) || [];
+            const guestList = document.getElementById('guestList');
+            const guestCount = document.getElementById('guestCount');
+            
+            // Liste boşsa
+            if (guests.length === 0) {
+                guestList.innerHTML = '<li class="empty-list">Henüz kayıtlı davetli bulunmuyor.</li>';
+                guestCount.textContent = 'Toplam Davetli: 0';
+                return;
+            }
+            
+            // Listeyi oluştur
+            guestList.innerHTML = '';
+            guests.forEach((guest, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div style="display: flex; align-items: center; width: 100%;">
+                        <div class="guest-number">${index + 1}</div>
+                        <div class="guest-info">
+                            <strong>${guest.name} ${guest.surname}</strong>
+                            <div style="font-size: 0.85rem; color: #777; margin-top: 5px;">
+                                Kayıt tarihi: ${guest.date}
+                            </div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteGuest(${guest.id})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                guestList.appendChild(li);
+            });
+            
+            // Toplam davetli sayısını güncelle
+            guestCount.textContent = `Toplam Davetli: ${guests.length}`;
+        }
+        
+        // Davetli silme işlevi
+        function deleteGuest(id) {
+            if (!confirm('Bu davetliyi listeden silmek istediğinize emin misiniz?')) {
+                return;
+            }
+            
+            let guests = JSON.parse(localStorage.getItem('weddingGuests')) || [];
+            guests = guests.filter(guest => guest.id !== id);
+            
+            localStorage.setItem('weddingGuests', JSON.stringify(guests));
+            loadGuests();
+            
+            showNotification('Davetli listeden silindi.');
+        }
+        
+        // Bildirim gösterme işlevi
+        function showNotification(message) {
+            // Bildirim oluştur
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #8B008B;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+                font-weight: 600;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // 3 saniye sonra bildirimi kaldır
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // CSS animasyonları
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
